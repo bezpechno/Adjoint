@@ -1,0 +1,5 @@
+.gitigonre
+.config.py
+/venv
+/backend/venv
+/backend/config.py
