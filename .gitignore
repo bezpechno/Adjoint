@@ -3,3 +3,5 @@
 /venv
 /backend/venv
 /backend/config.py
+/backend/.env
+

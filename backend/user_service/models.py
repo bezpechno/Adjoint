@@ -1,20 +1,26 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from ..extensions import mongo
-
 class User:
-    def __init__(self, username, email, password):
-        self.username = username
+    def __init__(self, email, password, username=None):
         self.email = email
         self.password_hash = generate_password_hash(password)
+        self.username = username
 
-    def save(self):
-        user = mongo.db.users.find_one({"$or": [{"username": self.username}, {"email": self.email}]})
-        if user:
-            return False  # User already exists
-        mongo.db.users.insert_one({
-            "username": self.username,
+    def to_dict(self):
+        return {
             "email": self.email,
-            "password_hash": self.password_hash
-        })
-        return True
+            "password_hash": self.password_hash,
+            "username": self.username,
+        }
+
+    def set_username(self, username):
+        self.username = username
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def update_password(self, new_password):
+        self.password_hash = generate_password_hash(new_password)
+
+    def update_email(self, new_email):
+        self.email = new_email

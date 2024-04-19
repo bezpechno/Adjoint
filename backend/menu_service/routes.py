@@ -1,17 +1,22 @@
-from flask import Blueprint, request, jsonify
-from .models import MenuItem
+# menu_service/routes.py
+from flask_restx import Namespace
+from .menu import Menu
+from .analytics import Analytics
+from .settings import Settings
+from .categories import Categories
 
-menu_bp = Blueprint('menu', __name__)
+def init_routes_menu_service(api):
+    menu_ns = Namespace('menu', description='Menu operations')
+    analytics_ns = Namespace('analytics', description='Analytics operations')
+    settings_ns = Namespace('settings', description='Settings operations')
+    categories_ns = Namespace('categories', description='Categories operations')
 
-@menu_bp.route('/items', methods=['POST'])
-def create_item():
-    data = request.json
-    MenuItem.create_item(data)
-    return jsonify({"message": "Item created successfully"}), 201
+    menu_ns.add_resource(Menu, '/')
+    analytics_ns.add_resource(Analytics, '/')
+    settings_ns.add_resource(Settings, '/')
+    categories_ns.add_resource(Categories, '/')
 
-@menu_bp.route('/items', methods=['GET'])
-def get_items():
-    items = MenuItem.get_all_items()
-    return jsonify(items), 200
-
-# Additional endpoints for update and delete
+    api.add_namespace(menu_ns, path='/api/menu')
+    api.add_namespace(analytics_ns, path='/api/menu/analytics')
+    api.add_namespace(settings_ns, path='/api/menu/settings')
+    api.add_namespace(categories_ns, path='/api/menu/categories')
