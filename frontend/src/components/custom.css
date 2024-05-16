@@ -1,0 +1,45 @@
+/* custom.css */
+.custom-table th, .custom-table td {
+    border: 1px solid #343a40; /* Темные границы для ячеек */
+  }
+  
+  .custom-table th {
+    background-color: #495057; /* Темный фон для заголовков */
+    color: white;
+    text-align: center;
+  }
+  
+  .custom-table td {
+    background-color: #e9ecef; /* Светлый фон для данных */
+    color: #000000; /* Темный текст */
+    text-align: center;
+  }
+  
+  .custom-table select, .custom-table input {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+  }
+  
+  .button {
+    background-color: #495057; /* Стили кнопок соответствуют индустриальному дизайну */
+  }
+  
+  .analytics-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-container {
+    width: 80%;
+    max-width: 600px;
+    height: 400px; /* Убедитесь, что высота установлена здесь */
+    margin-bottom: 20px;
+  }
+  
+  .chart-container canvas {
+    height: 100% !important;
+    width: 100% !important;
+  }
+  
+  

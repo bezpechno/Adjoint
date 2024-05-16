@@ -1,5 +1,4 @@
 import React from 'react';
-
 import SidebarMenu from '../components/SidebarMenu';
 import { useUserAuthentication } from '../hooks/useUserAuthentication';
 import CategoriesTable from '../components/CategoriesTable'; 
@@ -9,15 +8,16 @@ function Categories() {
 
     return (
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-2">
-              <SidebarMenu username={username} />
+            <div className="row">
+                <div className="col-md-2">
+                    <SidebarMenu username={username} />
+                </div>
+                <div className="col-md-10 mt-4 p-4"> {/* Добавлен класс p-4 для отступа */}
+                    {token && <CategoriesTable token={token} />}
+                </div>
             </div>
-            <div className="col-md-10">
-            {token && <CategoriesTable token={token} />}
-            </div>
-          </div>
         </div>
-      );
-  }
+    );
+}
+
 export default Categories;

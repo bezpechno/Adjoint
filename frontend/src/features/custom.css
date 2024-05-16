@@ -1,0 +1,26 @@
+/* custom.css */
+body {
+    background-color: #f4f4f4; /* светлый фон для контраста */
+    color: #333; /* темный цвет текста */
+  }
+  
+  .btn-primary {
+    background-color: #495057; /* темно-серый цвет кнопок */
+    border: none;
+  }
+  
+  .form-control {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+  }
+  
+  .form-label {
+    color: #495057; /* Цвет метки формы в стиле индустриального дизайна */
+  }
+  
+  .navbar, .footer {
+    background-color: #343a40; /* Темный фон для шапки и подвала */
+  }
+  
+  /* Дополнительные стили могут быть добавлены для улучшения визуального вида */
+  

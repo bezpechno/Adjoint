@@ -9,6 +9,7 @@ import Analytics from './Analytics';
 import Categories from './Categories';
 import Menu from './Menu';
 import Settings from './Settings';
+import MenuApp from './MenuApp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -26,6 +27,8 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/m/:username" element={<MenuApp />} />
+
           {/* Define more routes as needed */}
         </Routes>
       </div>

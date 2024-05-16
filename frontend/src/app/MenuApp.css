@@ -1,0 +1,50 @@
+/* MenuApp.css */
+
+.menu-navbar {
+    padding: 1rem;
+    background-color: #fff;
+  }
+  
+  .menu-navbar .navbar-brand {
+    font-size: 1.5rem;
+  }
+  
+  .menu-navbar .nav-item {
+    margin-right: 1rem;
+  }
+  
+  .menu-navbar .nav-item.active {
+    font-weight: bold;
+    color: #007bff !important;
+  }
+  
+  .table-responsive-sm {
+    margin-top: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-img-top {
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-navbar {
+      flex-direction: column;
+      align-items: center;
+    }
+    .menu-navbar .nav {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  

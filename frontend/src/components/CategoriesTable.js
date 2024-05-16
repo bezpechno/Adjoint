@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 function CategoriesTable({ token }) {
   const [categories, setCategories] = useState([]);
@@ -263,9 +264,9 @@ function CategoriesTable({ token }) {
             {categories.map((category, index) => (
               <th key={index} style={{ width: '200px' }}>
                 {category.name}
-                <button onClick={() => handleEditCategory(index)}>Edit</button>
-                <button onClick={() => handleDeleteCategory(index)}>Delete</button>
-                <button onClick={() => handleAddDish(index)}>Add Dish</button>
+                <Button onClick={() => handleEditCategory(index)} variant="outline-secondary">Edit</Button>
+                <Button onClick={() => handleDeleteCategory(index)} variant="outline-warning">Delete</Button>
+                <Button onClick={() => handleAddDish(index)} variant="outline-primary">Add Dish</Button>
               </th>
             ))}
           </tr>
@@ -275,17 +276,17 @@ function CategoriesTable({ token }) {
             {categories.map((category, categoryIndex) => (
               <td key={categoryIndex}>
                 {category.dishes.map((dishID, dishIndex) => (
-                  <div key={dishIndex}>
-                    <select value={dishID || ""} onChange={e => handleChange(e, categoryIndex, dishIndex)}>
-                        <option value="">Select...</option>
-                        {menuItems.map(item => (
-                            <option key={item.value} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
+                  <div key={dishIndex} className="d-flex align-items-center justify-content-between">
+                    <select className="form-control" value={dishID || ""} onChange={e => handleChange(e, categoryIndex, dishIndex)}>
+                      <option value="">Select...</option>
+                      {menuItems.map(item => (
+                        <option key={item.value} value={item.value}>
+                          {item.label}
+                        </option>
+                      ))}
                     </select>
 
-                    <button onClick={() => handleRemoveDish(categoryIndex, dishIndex)}>Remove Dish</button>
+                    <Button onClick={() => handleRemoveDish(categoryIndex, dishIndex)} variant="secondary">Remove</Button>
                   </div>
                 ))}
               </td>
@@ -294,8 +295,10 @@ function CategoriesTable({ token }) {
         </tbody>
         
       </table>
-      <button onClick={handleAddCategory}>Add Category</button>
-      <button onClick={handleSubmit}>Submit</button>
+      <div className="mt-2">
+        <Button onClick={handleAddCategory} variant="success">Add Category</Button>
+        <Button onClick={handleSubmit} variant="primary">Submit</Button>
+      </div>
     </div>
   );
   

@@ -1,0 +1,86 @@
+/* Применять стили только к сайдбару с уникальным классом 'sidebar-menu' */
+.navbar.sidebar-menu {
+    position: fixed; /* Убедитесь, что используется fixed */
+    top: 0;
+    left: 0;
+    z-index: 1050; /* Увеличьте z-index, чтобы он был выше, чем у других компонентов */
+    width: 100%; /* Полная ширина на малых экранах */
+    background-color: #333; /* Темный фон для промышленного стиля */
+}
+  
+  /* Специфичные стили для .navbar-toggler и .navbar-collapse внутри .sidebar-menu */
+  .navbar.sidebar-menu .navbar-toggler {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+  
+  .navbar.sidebar-menu .navbar-collapse {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  .error-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+  }
+
+  
+  .navbar-toggler-icon {
+    height: 24px; /* Размер иконки */
+    width: 24px; /* Размер иконки */
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  
+  /* Стиль раскрывающегося меню */
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050; /* Убедитесь, что z-index достаточно высок */
+    background-color: rgba(255, 255, 255, 0.95); /* Белый полупрозрачный фон */
+    padding-top: 50px; /* Отступ сверху для доступа к бургер-кнопке */
+    height: 100vh; /* Полная высота экрана */
+    overflow-y: auto; /* Позволяет прокручивать меню, если оно высокое */
+}
+  
+  /* Стиль ссылок в меню */
+  .nav-link {
+    color: black;
+    padding: 10px 20px; /* Отступы для удобства нажатия */
+    text-align: center; /* Центрирование текста */
+    width: 100%; /* Полная ширина для лучшего клика по элементам */
+    display: block; /* Чтобы ссылки занимали свою строку */
+  }
+  
+  /* Адаптивность для не мобильных устройств */
+  @media (min-width: 768px) {
+    .navbar {
+      width: 16.67%; /* 1/6 от ширины экрана */
+      background-color: #333; /* Фон для промышленного стиля */
+    }
+    .navbar.sidebar-menu {
+        width: 16.67%; /* 1/6 от ширины экрана */
+        min-width: 250px; /* Минимальная ширина */
+    }
+    .navbar-collapse {
+        position: static;
+        width: auto;
+        padding-top: 0;
+        height: auto;
+        background-color: transparent;
+        justify-content: center;
+    }
+  
+    .navbar-toggler {
+      display: none; /* Скрыть бургер-кнопку на больших экранах */
+    }
+  }
+  
