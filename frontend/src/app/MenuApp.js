@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { Container, Row, Col, Nav, Card, Button, Modal, Offcanvas, Form } from 'react-bootstrap';
 import axios from 'axios';
-import './MenuApp.css'; // Подключаем CSS-файл
+import './MenuApp.css';
 
 const allergensList = [
   'Gluten', 'Crustaceans', 'Eggs', 'Fish', 'Peanuts', 'Soybeans',
@@ -19,6 +19,7 @@ function MenuApp() {
   const [isLoading, setIsLoading] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
   const [excludedAllergens, setExcludedAllergens] = useState([]);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchCategories = axios.get(`http://localhost:5000/api/public/${username}/categories`);
@@ -35,12 +36,17 @@ function MenuApp() {
       setIsLoading(false);
     }).catch(error => {
       console.error('Failed to fetch data:', error);
+      setHasError(true);
     });
   }, [username]);
-
+  if (hasError) {
+    return <Navigate to="/" />;
+  }
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+
 
   const getCurrentDishes = () => {
     const currentCategory = categories.find(cat => cat._id === selectedCategoryId);
@@ -109,6 +115,7 @@ function MenuApp() {
       }
     });
   };
+
 
   return (
     <Container>

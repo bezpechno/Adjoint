@@ -5,7 +5,9 @@ from flask_cors import cross_origin
 import logging
 import ua_parser.user_agent_parser as ua_parser
 from datetime import datetime
-
+import pymongo
+import random
+from datetime import datetime, timedelta
 # Setup logging configuration
 logging.basicConfig(level=logging.DEBUG)
 
@@ -63,6 +65,7 @@ class Categories(Resource):
             logging.error("Server error", exc_info=True)
             return Response(json_util.dumps({"error": "Internal server error"}), status=500, mimetype='application/json')
 
+        
 @public_ns.route('/<string:username>/dishes')
 class Dishes(Resource):
     @cross_origin()
@@ -84,7 +87,7 @@ class Dishes(Resource):
                 "details": dish["details"],
                 "price": dish["price"],
                 "photo": dish["photo"],
-                "allergens": dish.get("allergens", {}),
+                "allergens": dish.get("allergens", []),  # Предполагаем, что allergens - это массив
                 "status": dish["status"]
             } for dish in dishes]
 
@@ -95,6 +98,7 @@ class Dishes(Resource):
         except Exception as e:
             logging.error("Server error", exc_info=True)
             return Response(json_util.dumps({"error": "Internal server error"}), status=500, mimetype='application/json')
+
 
 @public_ns.route('/dishes/<string:dish_id>/like', methods=['POST'])
 class LikeDish(Resource):
@@ -154,6 +158,66 @@ class TrackClick(Resource):
                 "ip": user_ip,
                 "user_agent_info": get_user_agent_info(user_agent)
             }, username, menu_id)
+            event_types = ["dish_view"]
+            dish_ids = ["6648a0c60ebb5ea729040718"]
+            usernames = ["final"]
+            user_agents = [
+                {"family": "Chrome", "major": "124", "minor": "0", "patch": "0"},
+                {"family": "Mobile Safari", "major": "16", "minor": "6", "patch": None},
+                {"family": "Firefox", "major": "88", "minor": "0", "patch": None}
+            ]
+            oses = [
+                {"family": "Windows", "major": "10", "minor": None, "patch": None, "patch_minor": None},
+                {"family": "iOS", "major": "16", "minor": "6", "patch": None, "patch_minor": None},
+                {"family": "Android", "major": "11", "minor": None, "patch": None, "patch_minor": None}
+            ]
+            devices = [
+                {"family": "Other", "brand": None, "model": None},
+                {"family": "iPhone", "brand": "Apple", "model": "iPhone"},
+                {"family": "PC", "brand": "Dell", "model": "XPS"}
+            ]
+
+            def generate_random_data(start_date, end_date, num_records_per_day):
+                current_date = start_date
+                while current_date <= end_date:
+                    for _ in range(num_records_per_day):
+                        record = {
+                            "data": {
+                                "event_type": random.choice(event_types),
+                                "data": {
+                                    "dish_id": random.choice(dish_ids)
+                                },
+                                "username": random.choice(usernames)
+                            },
+                            "ip": "127.0.0.1",
+                            "timestamp": {
+                                "$date": {
+                                    "$numberLong": str(int(current_date.timestamp() * 1000))
+                                }
+                            },
+                            "user_agent_info": {
+                                "user_agent": random.choice(user_agents),
+                                "os": random.choice(oses),
+                                "device": random.choice(devices)
+                            },
+                            "username": random.choice(usernames)
+                        }
+                        db.clicks.insert_one(record)
+                    current_date += timedelta(days=1)
+
+            # Задание параметров генерации данных
+            start_date = datetime.utcnow() - timedelta(days=5)
+            end_date = datetime.utcnow()
+            num_records_per_day = 50
+
+            # Генерация и вставка данных
+            generate_random_data(start_date, end_date, num_records_per_day)
+
+            print("Исторические данные успешно добавлены в MongoDB.")
+            db.clicks.delete_many({ "data.data.dish_id": "6648a1280ebb5ea72904071e" })
+            db.clicks.delete_many({ "data.dish_id": "6648a1280ebb5ea72904071e" })
+
+
 
             return Response(json_util.dumps({"message": "Click tracked"}), mimetype='application/json')
 

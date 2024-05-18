@@ -1,24 +1,23 @@
-// App.js
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './app/LandingPage';
-import MenuItems from './features/menuItems/menuItems'; // Adjusted
-import Login from './features/auth/Login'; // Adjusted
-import Register from './features/auth/Register'; // Adjusted
+import MenuItems from './features/menuItems/menuItems';
+import Login from './features/auth/Login';
+import Register from './features/auth/Register';
 import Dashboard from './app/Dashboard';
 import Analytics from './app/Analytics';
 import Categories from './app/Categories';
 import Menu from './app/Menu';
 import Settings from './app/Settings';
 import MenuApp from './app/MenuApp';
-import { ErrorProvider } from './features/errors/ErrorContext'; // Add import for ErrorProvider
-import { useAxiosInterceptor } from './api'; // Add import for useAxiosInterceptor
+import { ErrorProvider } from './features/errors/ErrorContext';
+import { useAxiosInterceptor } from './api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Создаем компонент для использования интерсептора
 const InterceptorSetup = ({ children }) => {
-  useAxiosInterceptor(); // Здесь вызываем интерсептор
+  useAxiosInterceptor();
   return children;
 };
 
@@ -40,6 +39,8 @@ function App() {
               <Route path="/menu" element={<Menu />} />
               <Route path="/m/:username" element={<MenuApp />} />
               {/* Define more routes as needed */}
+              <Route path="*" element={<Navigate to="/" />} /> {/* Redirect for non-existent routes */}
+              <Route path="/m/*" element={<Navigate to="/" />} /> {/* Redirect for non-existent routes */}
             </Routes>
           </div>
         </InterceptorSetup>

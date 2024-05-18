@@ -72,7 +72,7 @@ function MenuTable({ token }) {
         });
         console.log('New data submitted:', response.data);
         refreshData();
-        setRows([{ name: '', details: '', price: '', allergens: {}, photo: '', status: 'activated' }]);
+        setRows([{ name: '', details: '', price: '', allergens: {}, photo: '', status: 'active' }]);
       } catch (err) {
         console.error('Error during submission of new data:', err);
         setApiError(err.message || 'Unknown error during submission of new data');

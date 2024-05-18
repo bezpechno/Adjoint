@@ -1,32 +1,23 @@
-// api.js
+// src/api.js
 import axios from 'axios';
 import { useError } from './features/errors/ErrorContext';
-import {  useEffect } from 'react';
+
 const api = axios.create({
-  baseURL: 'https://your-api-url.com', // Замените на URL вашего API
+  baseURL: 'http://localhost:5000/api/dashboard/', // замените на URL вашего API
 });
 
 const useAxiosInterceptor = () => {
   const { setError } = useError();
 
-  useEffect(() => {
-    const interceptor = api.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response && error.response.data && error.response.data.message === 'signature expired') {
-          setError('Signature has expired. You will be redirected to the login page.');
-          setTimeout(() => {
-            window.location.href = '/login'; // Замените на URL страницы авторизации
-          }, 5000);
-        }
-        return Promise.reject(error);
+  axios.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response.status === 401 && error.response.data.message === 'Signature has expired') {
+        setError('Your session has expired. Please log in again.');
       }
-    );
-
-    return () => {
-      api.interceptors.response.eject(interceptor);
-    };
-  }, [setError]);
+      return Promise.reject(error);
+    }
+  );
 };
 
 export { api, useAxiosInterceptor };

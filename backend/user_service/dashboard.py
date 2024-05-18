@@ -6,7 +6,9 @@ from flask_cors import cross_origin
 from backend.db import get_db
 from werkzeug.exceptions import NotFound
 import jwt
+from jwt.exceptions import ExpiredSignatureError
 from datetime import datetime, timedelta
+import numpy as np
 
 class Dashboard(Resource):
     @cross_origin()
@@ -30,6 +32,9 @@ class Dashboard(Resource):
                 current_app.logger.error(f"404 error: {error_message}")
                 current_app.logger.error(f"Path not found: {request.path}")
                 raise NotFound(description=f"{error_message}. Path: {request.path}")
+        except ExpiredSignatureError as e:
+            current_app.logger.error(f"Token has expired: {str(e)}")
+            return {"message": "Signature has expired"}, 401
         except Exception as e:
             current_app.logger.error(f"Error in Dashboard endpoint: {str(e)}")
             return {"error": str(e)}, 500
@@ -89,9 +94,32 @@ class Dashboard(Resource):
             {"$sort": {"count": -1}}
         ]))
 
+        # Прогнозирование просмотров
+        forecast = self.forecast_views(views_over_time)
+
         return {
             'top_dishes': top_dishes,
             'views_over_time': views_over_time,
             'likes_over_time': likes_over_time,
-            'device_usage': device_usage
+            'device_usage': device_usage,
+            'forecast': forecast
         }
+
+    def forecast_views(self, views_over_time):
+        counts = [view['count'] for view in views_over_time]
+        forecast_days = 3
+        historical_days = 5
+        forecast = []
+
+        if len(counts) >= historical_days:
+            for i in range(forecast_days):
+                forecast.append(np.mean(counts[-historical_days:]))
+            forecast_dates = [(datetime.utcnow() + timedelta(days=i+1)).strftime("%Y-%m-%d") for i in range(forecast_days)]
+            forecast_data = {
+                "dates": forecast_dates,
+                "counts": forecast
+            }
+        else:
+            forecast_data = None
+
+        return forecast_data

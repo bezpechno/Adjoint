@@ -1,16 +1,22 @@
-// SidebarMenu.js
+// src/components/SidebarMenu.js
 import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useError } from '../features/errors/ErrorContext';
-import './SidebarMenu.css'; // Убедитесь, что CSS загружается
+import Modal from './Modal';
+import './SidebarMenu.css';
 
 function SidebarMenu({ username }) {
   const navigate = useNavigate();
-  const { error } = useError();
+  const { error, setError } = useError();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const handleClose = () => {
+    setError(null);
     navigate('/login');
   };
 
@@ -30,11 +36,7 @@ function SidebarMenu({ username }) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      {error && (
-        <div className="error-message">
-          {error}
-        </div>
-      )}
+      {error && <Modal message={error} onClose={handleClose} />}
     </div>
   );
 }
