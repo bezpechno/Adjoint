@@ -20,7 +20,7 @@ def init_routes_menu_service(api):
     public_ns = Namespace('public', description='Public operations')
 
     menu_ns.add_resource(Menu, '/')
-    analytics_ns.add_resource(Analytics, '/')  # Убедитесь, что маршрут добавлен правильно
+    analytics_ns.add_resource(Analytics, '/')
     settings_ns.add_resource(Settings, '/')
     categories_ns.add_resource(Categories, '/')
     public_ns.add_resource(PublicCategories, '/<string:username>/categories')

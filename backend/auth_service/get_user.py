@@ -12,20 +12,18 @@ class GetUser(Resource):
     def get(self):
         from backend.db import get_db
         db = get_db()
-        # Check JWT token for 'GET' request
         token = get_jwt_identity()
-        logging.info(f"Token: {token}")  # Log the token
-
+        logging.info(f"Token: {token}")  
         if not token:
-            return redirect(url_for('user_bp.login'))  # Redirect unauthenticated users to the login page
+            return redirect(url_for('user_bp.login'))  
 
         try:
-            username = token  # Get the username of the logged-in user
-            user = db.users.find_one({"email": username})  # Use "email" instead of "username"
+            username = token 
+            user = db.users.find_one({"email": username}) 
             if user:
-                return {'username': user['username']}, 200  # Return the username in JSON format
+                return {'username': user['username']}, 200  
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError as e:
-            logging.error(f"Authentication error: {e}")  # Log the error
+            logging.error(f"Authentication error: {e}")  
             return jsonify({'error': 'Authentication required'}), 401

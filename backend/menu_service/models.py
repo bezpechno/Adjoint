@@ -11,4 +11,3 @@ class MenuItem:
     def get_all_items():
         return list(backend.mongo_connector.mongo.db.menu_items.find({}))
 
-    # Additional CRUD operations here

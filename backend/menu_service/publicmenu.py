@@ -8,13 +8,10 @@ from datetime import datetime
 import pymongo
 import random
 from datetime import datetime, timedelta
-# Setup logging configuration
 logging.basicConfig(level=logging.DEBUG)
 
-# Create a namespace for the public routes
 public_ns = Namespace('public', description='Public operations')
 
-# Analytics function
 def log_event(event_type, data, username, menu_id):
     from backend.db import get_db
     db = get_db()
@@ -26,7 +23,6 @@ def log_event(event_type, data, username, menu_id):
         'timestamp': datetime.utcnow()
     })
 
-# Function to get user agent info
 def get_user_agent_info(user_agent):
     parsed_string = ua_parser.Parse(user_agent)
     return {

@@ -10,7 +10,7 @@ from bson.json_util import dumps, loads
 
 class Categories(Resource):
     @cross_origin()
-    @jwt_required()  # Protect this route with JWT
+    @jwt_required() 
     def get(self):
         from backend.db import get_db
         db = get_db()
@@ -29,69 +29,64 @@ class Categories(Resource):
                 return {'email': user['email'], 'categories': categories_list}, 200
 
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError:
-            return redirect(url_for('user_bp.login'))  # Redirect unauthenticated users to the login page
+            return redirect(url_for('user_bp.login'))  
 
     @cross_origin()
-    @jwt_required()  # Protect this route with JWT
+    @jwt_required() 
     def post(self):
         from backend.db import get_db
         db = get_db()
         try:
-            email = get_jwt_identity()  # Get the email of the logged-in user
+            email = get_jwt_identity()  
             user = db.users.find_one({"email": email})
             if user:
-                categories_data = request.get_json()  # Get the data from the request
+                categories_data = request.get_json() 
                 for item in categories_data:
-                    if isinstance(item, str):  # Check if item is a string
-                        item = json.loads(item)  # Convert the string to a dictionary
-                    # Add the user_id to each item
+                    if isinstance(item, str):  
+                        item = json.loads(item)  
                     item['menu_id'] = user['menu_id']
-                    # Update or insert each item in the database
                     db.categories.update_one({'menu_id': item['menu_id'], 'category': item['category']}, {'$set': item}, upsert=True)
                 return {'message': 'Categories updated successfully'}, 200
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError:
-            return jsonify({"error": "Unauthorized"}), 401  # Return a 401 error if the user is not authenticated.
+            return jsonify({"error": "Unauthorized"}), 401  
     @cross_origin()
-    @jwt_required()  # Protect this route with JWT
+    @jwt_required() 
     def put(self):
         from backend.db import get_db
         db = get_db()
         try:
-            email = get_jwt_identity()  # Get the email of the logged-in user
+            email = get_jwt_identity()  
             user = db.users.find_one({"email": email})
             if user:
-                category_data = request.get_json()  # Get the data from the request
-                if isinstance(category_data, str):  # Check if item is a string
-                    category_data = json.loads(category_data)  # Convert the string to a dictionary
-                # Add the user_id to each item
+                category_data = request.get_json()  
+                if isinstance(category_data, str):  
+                    category_data = json.loads(category_data)  
                 category_data['menu_id'] = user['menu_id']
-                # Update or insert each item in the database
                 db.categories.update_one({'menu_id': category_data['menu_id'], 'category': category_data['oldName']}, {'$set': {'category': category_data['newName'], 'dishes': category_data['dishes']}}, upsert=True)
                 return {'message': 'Category updated successfully'}, 200
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError:
-            return jsonify({"error": "Unauthorized"}), 401  # Return a 401 error if the user is not authenticated.
+            return jsonify({"error": "Unauthorized"}), 401  
     @cross_origin()
-    @jwt_required()  # Protect this route with JWT
+    @jwt_required()  
     def delete(self):
         from backend.db import get_db
         db = get_db()
         try:
-            email = get_jwt_identity()  # Get the email of the logged-in user
+            email = get_jwt_identity()  
             user = db.users.find_one({"email": email})
             if user:
-                category_data = request.get_json()  # Get the data from the request
-                if isinstance(category_data, str):  # Check if item is a string
-                    category_data = json.loads(category_data)  # Convert the string to a dictionary
-                # Delete the category from the database
+                category_data = request.get_json() 
+                if isinstance(category_data, str):  
+                    category_data = json.loads(category_data)  
                 db.categories.delete_one({'menu_id': user['menu_id'], 'category': category_data['name']})
                 return {'message': 'Category deleted successfully'}, 200
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError:
-            return jsonify({"error": "Unauthorized"}), 401  # Return a 401 error if the user is not authenticated.
+            return jsonify({"error": "Unauthorized"}), 401  

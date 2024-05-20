@@ -9,26 +9,26 @@ from werkzeug.security import generate_password_hash
 
 class Settings(Resource):
     @cross_origin()
-    @jwt_required()  # Protect this route with JWT
+    @jwt_required()  
     def get(self):
         from backend.db import get_db
         db = get_db()
         try:
-            username = get_jwt_identity()  # Get the username of the logged-in user
+            username = get_jwt_identity()  
             user = db.users.find_one({"username": username})
             if user:
-                return {'username': user['username']}, 200  # Return the username in JSON format
+                return {'username': user['username']}, 200  
             else:
-                return {'error': "No users found"}, 404  # Return an error if no users are found
+                return {'error': "No users found"}, 404  
         except NoAuthorizationError:
-            return redirect(url_for('user_bp.login'))  # Redirect unauthenticated users to the login page
+            return redirect(url_for('user_bp.login')) 
         
     @cross_origin()
     @jwt_required()
     def post(self):
         from backend.db import get_db
         db = get_db()
-        email = get_jwt_identity()  # Используем email из JWT токена в качестве идентификатора
+        email = get_jwt_identity()  
         data = request.get_json()
         setting_type = data.get('setting_type')
         new_value = data.get('value')

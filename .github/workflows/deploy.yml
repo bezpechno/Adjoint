@@ -42,7 +42,7 @@ jobs:
       run: |
         cd frontend
         npm install --legacy-peer-deps
-
+    - run: npm install netlify-cli -g --legacy-peer-deps
     - name: Run frontend tests
       run: |
         cd frontend
