@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './LandingPage';
-import MenuItems from '../features/menuItems/menuItems'; // Adjusted
+import MenuItems from '../features/menuItemsыыы/menuItems'; // Adjusted
 import Login from '../features/auth/Login'; // Adjusted
 import Register from '../features/auth/Register'; // Adjusted
 import Dashboard from './Dashboard';
@@ -29,7 +29,6 @@ function App() {
           <Route path="/menu" element={<Menu />} />
           <Route path="/m/:username" element={<MenuApp />} />
 
-          {/* Define more routes as needed */}
         </Routes>
       </div>
     </Router>

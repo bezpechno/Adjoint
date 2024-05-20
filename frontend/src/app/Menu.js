@@ -9,10 +9,10 @@ export function Menu() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-md-2 p-4"> {/* Добавлен класс p-4 для отступа в боковом меню */}
+        <div className="col-md-2 p-4"> 
           <SidebarMenu username={username} />
         </div>
-        <div className="col-md-10 mt-4 p-4"> {/* Добавлен класс p-4 для отступа в главной колонке */}
+        <div className="col-md-10 mt-4 p-4"> 
           {token && <MenuTable token={token} />}
         </div>
       </div>

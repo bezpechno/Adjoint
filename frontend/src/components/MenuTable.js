@@ -191,7 +191,7 @@ function MenuTable({ token }) {
             '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
             '(\\#[-a-z\\d_]*)?$',
           'i'
-        ); // fragment locator
+        ); 
 
         if (!urlPattern.test(value)) {
           setPhotoError('Invalid URL');
@@ -289,7 +289,7 @@ function MenuTable({ token }) {
             '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
             '(\\#[-a-z\\d_]*)?$',
           'i'
-        ); // fragment locator
+        ); 
 
         if (!urlPattern.test(value)) {
           setPhotoError('Invalid URL');

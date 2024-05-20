@@ -12,7 +12,7 @@ function Categories() {
                 <div className="col-md-2">
                     <SidebarMenu username={username} />
                 </div>
-                <div className="col-md-10 mt-4 p-4"> {/* Добавлен класс p-4 для отступа */}
+                <div className="col-md-10 mt-4 p-4"> 
                     {token && <CategoriesTable token={token} />}
                 </div>
             </div>

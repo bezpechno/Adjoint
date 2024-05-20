@@ -23,7 +23,6 @@ function LandingPage() {
 
   return (
     <div>
-      {/* Верхний контейнер, заменяющий Navbar */}
       <Container className="py-3 bg-light">
         <div className="d-flex justify-content-between align-items-center">
           <div>
@@ -36,7 +35,6 @@ function LandingPage() {
         </div>
       </Container>
 
-      {/* Основной контент страницы */}
       <Container style={{ padding: '2rem 0' }}>
         <Row className="mb-4">
           <Col md={12} className="text-center">
@@ -68,7 +66,6 @@ function LandingPage() {
         </Row>
       </Container>
 
-      {/* Нижний футер, заменяющий Navbar */}
       <Container className="py-3 bg-light text-center">
         <span className="text-muted">© 2024 Adjoint</span>
       </Container>

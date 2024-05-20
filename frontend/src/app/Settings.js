@@ -13,7 +13,7 @@ function Settings() {
         <Col xs={12} md={3} lg={2} className="d-md-block">
           <SidebarMenu username={username} />
         </Col>
-        <Col xs={12} md={9} lg={10} className="p-4 mt-4" style={{ paddingTop: '20px' }}> {/* Добавлен верхний отступ */}
+        <Col xs={12} md={9} lg={10} className="p-4 mt-4" style={{ paddingTop: '20px' }}> 
           <SettingsTable token={token} />
         </Col>
       </Row>

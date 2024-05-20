@@ -1,17 +1,17 @@
 /* custom.css */
 .custom-table th, .custom-table td {
-    border: 1px solid #343a40; /* Темные границы для ячеек */
+    border: 1px solid #343a40; 
   }
   
   .custom-table th {
-    background-color: #495057; /* Темный фон для заголовков */
+    background-color: #495057; 
     color: white;
     text-align: center;
   }
   
   .custom-table td {
-    background-color: #e9ecef; /* Светлый фон для данных */
-    color: #000000; /* Темный текст */
+    background-color: #e9ecef; 
+    color: #000000; 
     text-align: center;
   }
   
@@ -21,7 +21,7 @@
   }
   
   .button {
-    background-color: #495057; /* Стили кнопок соответствуют индустриальному дизайну */
+    background-color: #495057; 
   }
   
   .analytics-container {
@@ -33,7 +33,7 @@
   .chart-container {
     width: 80%;
     max-width: 600px;
-    height: 400px; /* Убедитесь, что высота установлена здесь */
+    height: 400px; 
     margin-bottom: 20px;
   }
   

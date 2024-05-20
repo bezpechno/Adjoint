@@ -45,10 +45,10 @@ const Dashboard = () => {
       const regressionResult = linearRegression(data);
       const regressionLine = linearRegressionLine(regressionResult);
 
-      // Generate forecast for the next 7 days
+      // Generate forecast for the next 2 days
       const lastDate = new Date(Math.max(...data.map(d => d[0])));
       const forecastData = [];
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= 2; i++) {
         const newDate = new Date(lastDate);
         newDate.setDate(lastDate.getDate() + i);
         forecastData.push([newDate.getTime(), regressionLine(newDate.getTime())]);

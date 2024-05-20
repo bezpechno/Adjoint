@@ -7,10 +7,9 @@ function RegistrationForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [success, setSuccess] = useState(false); // State for success message
-    const [error, setError] = useState(""); // State for error message
-
-    const navigate = useNavigate(); // Initialize useHistory
+    const [success, setSuccess] = useState(false); 
+    const [error, setError] = useState(""); 
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,15 +22,15 @@ function RegistrationForm() {
 
         try {
             await axios.post('http://localhost:5000/api/auth/register', userData);
-            setSuccess(true); // Set success to true on successful registration
+            setSuccess(true); 
             setTimeout(() => {
-                navigate('/login'); // Redirect to login page after 2 seconds
+                navigate('/login'); 
             }, 2000);
         } catch (error) {
             if (error.response) {
-                setError(error.response.data.error); // Set error message from server
+                setError(error.response.data.error); 
             } else {
-                setError('There was an error!'); // Set a generic error message
+                setError('There was an error!'); 
             }
         }
     };

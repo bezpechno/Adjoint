@@ -1,6 +1,6 @@
 // src/components/Modal.js
 import React from 'react';
-import './Modal.css'; // Убедитесь, что CSS для модального окна подключен
+import './Modal.css';
 
 const Modal = ({ message, onClose }) => (
   <div className="modal-error">

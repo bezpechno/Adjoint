@@ -20,10 +20,10 @@ export function useUserAuthentication() {
         }
       })
       .then(response => {
-        setUsername(response.data.username);  // Set the username from the response
+        setUsername(response.data.username);
       })
       .catch(error => {
-        console.error(error);  // Log any errors
+        console.error(error); 
       });
     }
   }, [navigate]);
