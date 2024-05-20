@@ -12,7 +12,7 @@ function MenuTable({ token }) {
   const [editIndex, setEditIndex] = useState(null);
   const [photoError, setPhotoError] = useState(null);
 
-  const { data: existingRows, isLoading, error, setData: setExistingRows, setLoading, setApiError } = useApiData(token);
+  const { data: existingRows, error, setData: setExistingRows, setLoading, setApiError } = useApiData(token);
   const allergensList = [
     'Gluten', 'Crustaceans', 'Eggs', 'Fish', 'Peanuts', 'Soybeans',
     'Milk', 'Nuts', 'Celery', 'Mustard', 'Sesame', 'Sulphites', 'Lupin', 'Molluscs'

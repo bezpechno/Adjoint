@@ -27,7 +27,7 @@ function LandingPage() {
       <Container className="py-3 bg-light">
         <div className="d-flex justify-content-between align-items-center">
           <div>
-            <a href="#" className="text-dark text-decoration-none display-3">Adjoint</a>
+            <a href="/login" className="text-dark text-decoration-none display-3">Adjoint</a>
           </div>
           <Nav className="ml-auto">
             <Nav.Link href="/login" className="text-dark">Login</Nav.Link>

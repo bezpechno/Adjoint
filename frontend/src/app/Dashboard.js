@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SidebarMenu from '../components/SidebarMenu';
 import { useUserAuthentication } from '../hooks/useUserAuthentication';
-import { Container, Row, Col, Button, ButtonGroup, Table, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import QRCode from 'qrcode.react';
@@ -11,7 +11,7 @@ const Dashboard = () => {
   const { username, token } = useUserAuthentication();
   const [analyticsData, setAnalyticsData] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [showForecast, setShowForecast] = useState(true);
+  const [showForecast] = useState(true);
   const [viewsOverTimeData, setViewsOverTimeData] = useState({});
   const qrRef = useRef(null);
 
@@ -95,8 +95,6 @@ const Dashboard = () => {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-
-  const handleToggleForecast = () => setShowForecast(prevShowForecast => !prevShowForecast);
 
   const qrValue = `${window.location.origin}/m/${username}`;
 

@@ -22,7 +22,7 @@ function RegistrationForm() {
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+            await axios.post('http://localhost:5000/api/auth/register', userData);
             setSuccess(true); // Set success to true on successful registration
             setTimeout(() => {
                 navigate('/login'); // Redirect to login page after 2 seconds
