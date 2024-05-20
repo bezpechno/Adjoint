@@ -92,12 +92,19 @@ function SettingsTable({ token }) {
                   value={deleteConfirm} 
                   onChange={handleDeleteChange} 
                   required
+                  aria-label="delete-confirm-input"
                 />
               </>
             ) : (
               <Form.Group>
-                <Form.Label>New {activeSetting}</Form.Label>
-                <Form.Control type="text" value={formValue} onChange={handleChange} required />
+                <Form.Label htmlFor="form-input">New {activeSetting}</Form.Label>
+                <Form.Control 
+                  id="form-input"
+                  type="text" 
+                  value={formValue} 
+                  onChange={handleChange} 
+                  required 
+                />
               </Form.Group>
             )}
             <Button variant="primary" type="submit">Save Changes</Button>

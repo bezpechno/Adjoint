@@ -10,7 +10,7 @@ function MenuTable({ token }) {
   const [modalContent, setModalContent] = useState({});
   const [rows, setRows] = useState([{ name: '', details: '', price: '', allergens: {}, photo: '', status: 'active' }]);
   const [editIndex, setEditIndex] = useState(null);
-  const [photoError, setPhotoError] = useState(null); // New state for photo URL error
+  const [photoError, setPhotoError] = useState(null);
 
   const { data: existingRows, isLoading, error, setData: setExistingRows, setLoading, setApiError } = useApiData(token);
   const allergensList = [
@@ -24,12 +24,12 @@ function MenuTable({ token }) {
     setShowModal(true);
   };
 
-  const handleRemoveClick = index => {
-    setRows(rows.filter((_, i) => i !== index));
+  const handleRemoveClick = (index) => {
+    setRows((prevRows) => prevRows.filter((_, i) => i !== index));
   };
 
   const handleAddClick = () => {
-    setRows([...rows, { name: '', details: '', price: '', allergens: {}, photo: '', status: 'active' }]);
+    setRows((prevRows) => [...prevRows, { name: '', details: '', price: '', allergens: {}, photo: '', status: 'active' }]);
   };
 
   const handleSubmit = async () => {
@@ -49,9 +49,9 @@ function MenuTable({ token }) {
       try {
         const response = await axios.put(`http://localhost:5000/api/menu/`, itemToUpdate, {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         });
         console.log('Data updated:', response.data);
         refreshData();
@@ -62,13 +62,13 @@ function MenuTable({ token }) {
       }
     }
 
-    const newRowsToSubmit = rows.filter(row => row.name.trim() !== '');
+    const newRowsToSubmit = rows.filter((row) => row.name.trim() !== '');
     if (newRowsToSubmit.length > 0) {
       try {
         const response = await axios.post('http://localhost:5000/api/menu/', newRowsToSubmit, {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         console.log('New data submitted:', response.data);
         refreshData();
@@ -86,13 +86,14 @@ function MenuTable({ token }) {
 
   const refreshData = useCallback(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/api/menu/', { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(response => {
+    axios
+      .get('http://localhost:5000/api/menu/', { headers: { Authorization: `Bearer ${token}` } })
+      .then((response) => {
         const menu = JSON.parse(response.data.menu);
-        setExistingRows(menu.map(item => ({ ...item, _id: item._id })));
+        setExistingRows(menu.map((item) => ({ ...item, _id: item._id })));
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setApiError('Failed to fetch menu data: ' + err.message);
         setLoading(false);
       });
@@ -105,8 +106,8 @@ function MenuTable({ token }) {
         data: _id,
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
       if (response.status === 200) {
         refreshData();
@@ -135,8 +136,12 @@ function MenuTable({ token }) {
             body: 'Are you sure you want to delete this item?',
             buttons: (
               <>
-                <Button variant="secondary" onClick={handleClose}>No</Button>
-                <Button variant="danger" onClick={() => handleDelete(existingRows[index]._id.$oid)}>Delete</Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  No
+                </Button>
+                <Button variant="danger" onClick={() => handleDelete(existingRows[index]._id.$oid)}>
+                  Delete
+                </Button>
               </>
             ),
           });
@@ -151,9 +156,15 @@ function MenuTable({ token }) {
             body: 'Do you want to activate or disable this item?',
             buttons: (
               <>
-                <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                <Button variant="primary" onClick={() => handleChangeStatus(existingRows[index]._id.$oid, 'active')}>Activate</Button>
-                <Button variant="primary" onClick={() => handleChangeStatus(existingRows[index]._id.$oid, 'disabled')}>Disable</Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={() => handleChangeStatus(existingRows[index]._id.$oid, 'active')}>
+                  Activate
+                </Button>
+                <Button variant="primary" onClick={() => handleChangeStatus(existingRows[index]._id.$oid, 'disabled')}>
+                  Disable
+                </Button>
               </>
             ),
           });
@@ -167,31 +178,36 @@ function MenuTable({ token }) {
     }
   };
 
-  const handleInputChange = useCallback((e, index) => {
-    const { name, value } = e.target;
+  const handleInputChange = useCallback(
+    (e, index) => {
+      const { name, value } = e.target;
 
-    if (name === 'photo') {
-      // Validate URL
-      const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+      if (name === 'photo') {
+        const urlPattern = new RegExp(
+          '^(https?:\\/\\/)?' + // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$',
+          'i'
+        ); // fragment locator
 
-      if (!urlPattern.test(value)) {
-        setPhotoError('Invalid URL');
-      } else {
-        setPhotoError(null);
+        if (!urlPattern.test(value)) {
+          setPhotoError('Invalid URL');
+        } else {
+          setPhotoError(null);
+        }
       }
-    }
 
-    setExistingRows(currentRows => {
-      const updatedRows = [...currentRows];
-      updatedRows[index] = { ...updatedRows[index], [name]: value };
-      return updatedRows;
-    });
-  }, [setExistingRows]);
+      setExistingRows((currentRows) => {
+        const updatedRows = [...currentRows];
+        updatedRows[index] = { ...updatedRows[index], [name]: value };
+        return updatedRows;
+      });
+    },
+    [setExistingRows]
+  );
 
   const handleChangeStatus = async (_id, newStatus) => {
     setLoading(true);
@@ -199,9 +215,9 @@ function MenuTable({ token }) {
       const updatedItem = { _id, status: newStatus };
       const response = await axios.put('http://localhost:5000/api/menu/', updatedItem, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
       if (response.status === 200) {
         refreshData();
@@ -217,19 +233,22 @@ function MenuTable({ token }) {
     }
   };
 
-  const handleAllergenChange = useCallback((index, allergen, isChecked) => {
-    setExistingRows(currentRows => {
-      const updatedRows = [...currentRows];
-      const updatedAllergens = updatedRows[index].allergens
-        ? { ...updatedRows[index].allergens, [allergen]: isChecked }
-        : { [allergen]: isChecked };
-      updatedRows[index] = { ...updatedRows[index], allergens: updatedAllergens };
-      return updatedRows;
-    });
-  }, [setExistingRows]);
+  const handleAllergenChange = useCallback(
+    (index, allergen, isChecked) => {
+      setExistingRows((currentRows) => {
+        const updatedRows = [...currentRows];
+        const updatedAllergens = updatedRows[index].allergens
+          ? { ...updatedRows[index].allergens, [allergen]: isChecked }
+          : { [allergen]: isChecked };
+        updatedRows[index] = { ...updatedRows[index], allergens: updatedAllergens };
+        return updatedRows;
+      });
+    },
+    [setExistingRows]
+  );
 
   const handleNewAllergenChange = (index, allergen, isChecked) => {
-    setRows(currentRows => {
+    setRows((currentRows) => {
       const updatedRows = [...currentRows];
       const updatedAllergens = updatedRows[index].allergens
         ? { ...updatedRows[index].allergens, [allergen]: isChecked }
@@ -243,42 +262,48 @@ function MenuTable({ token }) {
     const changeHandler = isNew ? handleNewAllergenChange : handleAllergenChange;
     return (
       <div>
-        {allergensList.map(allergen => (
+        {allergensList.map((allergen) => (
           <div key={allergen}>
             <input
               type="checkbox"
               checked={allergens && allergens[allergen]}
-              onChange={e => changeHandler(index, allergen, e.target.checked)}
-            /> {allergen}
+              onChange={(e) => changeHandler(index, allergen, e.target.checked)}
+            />{' '}
+            {allergen}
           </div>
         ))}
       </div>
     );
   };
 
-  const handleNewRowInputChange = useCallback((e, index) => {
-    const { name, value } = e.target;
+  const handleNewRowInputChange = useCallback(
+    (e, index) => {
+      const { name, value } = e.target;
 
-    if (name === 'photo') {
-      // Validate URL
-      const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+      if (name === 'photo') {
+        const urlPattern = new RegExp(
+          '^(https?:\\/\\/)?' + // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$',
+          'i'
+        ); // fragment locator
 
-      if (!urlPattern.test(value)) {
-        setPhotoError('Invalid URL');
-      } else {
-        setPhotoError(null);
+        if (!urlPattern.test(value)) {
+          setPhotoError('Invalid URL');
+        } else {
+          setPhotoError(null);
+        }
       }
-    }
 
-    const updatedRows = [...rows];
-    updatedRows[index] = { ...updatedRows[index], [name]: value };
-    setRows(updatedRows);
-  }, [rows, setRows]);
+      const updatedRows = [...rows];
+      updatedRows[index] = { ...updatedRows[index], [name]: value };
+      setRows(updatedRows);
+    },
+    [rows, setRows]
+  );
 
   return (
     <div className="table-responsive-sm">
@@ -299,21 +324,21 @@ function MenuTable({ token }) {
             <tr key={`existing-${i}`}>
               <td>
                 {editIndex === i ? (
-                  <input name="name" value={x.name} onChange={e => handleInputChange(e, i)} />
+                  <input name="name" value={x.name} onChange={(e) => handleInputChange(e, i)} />
                 ) : (
                   x.name
                 )}
               </td>
               <td>
                 {editIndex === i ? (
-                  <input name="details" value={x.details} onChange={e => handleInputChange(e, i)} />
+                  <input name="details" value={x.details} onChange={(e) => handleInputChange(e, i)} />
                 ) : (
                   x.details
                 )}
               </td>
               <td>
                 {editIndex === i ? (
-                  <input type="number" name="price" value={x.price} onChange={e => handleInputChange(e, i)} />
+                  <input type="number" name="price" value={x.price} onChange={(e) => handleInputChange(e, i)} />
                 ) : (
                   x.price
                 )}
@@ -322,19 +347,19 @@ function MenuTable({ token }) {
                 {editIndex === i ? (
                   <AllergenCheckboxes index={i} allergens={x.allergens || {}} isNew={false} />
                 ) : (
-                  Object.keys(x.allergens).filter(key => x.allergens[key]).join(', ')
+                  Object.keys(x.allergens).filter((key) => x.allergens[key]).join(', ')
                 )}
               </td>
               <td>
                 {editIndex === i ? (
-                  <input name="photo" value={x.photo} onChange={e => handleInputChange(e, i)} />
+                  <input name="photo" value={x.photo} onChange={(e) => handleInputChange(e, i)} />
                 ) : (
                   x.photo
                 )}
               </td>
               <td>{x.status}</td>
               <td>
-                <select name="action" onChange={e => handleChange(e, i)}>
+                <select name="action" onChange={(e) => handleChange(e, i)}>
                   <option value="">Select...</option>
                   <option value="edit">Edit</option>
                   <option value="delete">Delete</option>
@@ -345,15 +370,33 @@ function MenuTable({ token }) {
           ))}
           {rows.map((x, i) => (
             <tr key={`new-${i}`}>
-              <td><input name="name" value={x.name} onChange={e => handleNewRowInputChange(e, i)} /></td>
-              <td><input name="details" value={x.details} onChange={e => handleNewRowInputChange(e, i)} /></td>
-              <td><input type="number" name="price" value={x.price} onChange={e => handleNewRowInputChange(e, i)} step="0.01" /></td>
-              <td><AllergenCheckboxes index={i} allergens={x.allergens || {}} isNew={true} /></td>
-              <td><input name="photo" value={x.photo} onChange={e => handleNewRowInputChange(e, i)} /></td>
+              <td>
+                <input name="name" value={x.name} onChange={(e) => handleNewRowInputChange(e, i)} />
+              </td>
+              <td>
+                <input name="details" value={x.details} onChange={(e) => handleNewRowInputChange(e, i)} />
+              </td>
+              <td>
+                <input type="number" name="price" value={x.price} onChange={(e) => handleNewRowInputChange(e, i)} step="0.01" />
+              </td>
+              <td>
+                <AllergenCheckboxes index={i} allergens={x.allergens || {}} isNew={true} />
+              </td>
+              <td>
+                <input name="photo" value={x.photo} onChange={(e) => handleNewRowInputChange(e, i)} />
+              </td>
               <td>New</td>
               <td>
-                {rows.length !== 1 && <Button onClick={() => handleRemoveClick(i)} variant="secondary">Remove</Button>}
-                {rows.length - 1 === i && <Button onClick={handleAddClick} variant="primary">Add</Button>}
+                {rows.length !== 1 && (
+                  <Button onClick={() => handleRemoveClick(i)} variant="secondary">
+                    Remove
+                  </Button>
+                )}
+                {rows.length - 1 === i && (
+                  <Button onClick={handleAddClick} variant="primary">
+                    Add
+                  </Button>
+                )}
               </td>
             </tr>
           ))}
@@ -362,7 +405,9 @@ function MenuTable({ token }) {
       <div style={{ marginTop: 20 }}>
         {photoError && <div style={{ color: 'red' }}>{photoError}</div>}
         {error && <div style={{ color: 'red' }}>{error}</div>}
-        <Button onClick={handleSubmit} variant="success">Submit</Button>
+        <Button onClick={handleSubmit} variant="success">
+          Submit
+        </Button>
       </div>
       <ModalComponent showModal={showModal} handleClose={handleClose} modalContent={modalContent} />
     </div>
