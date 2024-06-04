@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap';
 function CategoriesTable({ token }) {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -21,8 +20,8 @@ function CategoriesTable({ token }) {
 
         const menuData = menuResponse.data && menuResponse.data.menu ? JSON.parse(menuResponse.data.menu) : [];
         const fetchedMenuItems = Array.isArray(menuData) ? menuData.map(item => ({
-          label: item.label,
-          value: item.value
+          label: item.name,
+          value: item._id.$oid
         })) : [];
 
         const categoriesData = categoriesResponse.data && categoriesResponse.data.categories ? categoriesResponse.data.categories : [];
@@ -34,10 +33,8 @@ function CategoriesTable({ token }) {
 
         setMenuItems(fetchedMenuItems);
         setCategories(fetchedCategories);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
       }
     }
 
@@ -151,12 +148,7 @@ function CategoriesTable({ token }) {
   const handleAddCategory = () => {
     const newCategoryName = prompt("Enter new category name");
     if (newCategoryName) {
-      const newCategory = {
-        _id: { $oid: (new Date()).getTime().toString() },
-        name: newCategoryName,
-        dishes: ['']
-      };
-      setCategories(prevCategories => [...prevCategories, newCategory]);
+      setCategories(prevCategories => [...prevCategories, { _id: null, name: newCategoryName, dishes: [''] }]);
     }
   };
 
@@ -183,17 +175,13 @@ function CategoriesTable({ token }) {
 
   const maxDishes = categories.length ? Math.max(...categories.map(category => category.dishes.length)) : 0;
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="table-responsive small" style={{ overflowX: 'auto' }}>
       <table className="table table-striped table-sm" style={{ tableLayout: 'fixed' }}>
         <thead>
           <tr>
             {categories.map((category, index) => (
-              <th key={category._id?.$oid || index} style={{ width: '200px' }}>
+              <th key={category._id || index} style={{ width: '200px' }}>
                 {category.name}
                 <Button onClick={() => handleEditCategory(index)} variant="outline-secondary">Edit</Button>
                 <Button onClick={() => handleDeleteCategory(index)} variant="outline-warning">Delete</Button>
@@ -206,7 +194,7 @@ function CategoriesTable({ token }) {
           {[...Array(maxDishes)].map((_, dishIndex) => (
             <tr key={dishIndex}>
               {categories.map((category, categoryIndex) => (
-                <td key={category._id?.$oid || categoryIndex}>
+                <td key={category._id || categoryIndex}>
                   {category.dishes[dishIndex] !== undefined && (
                     <div className="d-flex align-items-center justify-content-between">
                       <select className="form-control" value={category.dishes[dishIndex] || ""} onChange={e => handleChange(e, categoryIndex, dishIndex)}>

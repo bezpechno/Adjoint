@@ -5,3 +5,5 @@
 /backend/config.py
 /backend/.env
 /git-extras
+/frontend/node_modules
+/backend/__pycache__

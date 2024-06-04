@@ -12,9 +12,9 @@ const mockCategories = [
 ];
 
 const mockMenuItems = [
-  { label: 'Dish 1', value: '1' },
-  { label: 'Dish 2', value: '2' },
-  { label: 'Dish 3', value: '3' }
+  { name: 'Dish 1', _id: { $oid: '1' } },
+  { name: 'Dish 2', _id: { $oid: '2' } },
+  { name: 'Dish 3', _id: { $oid: '3' } }
 ];
 
 const setup = async () => {

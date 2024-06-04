@@ -20,10 +20,8 @@ function LoginForm() {
             const response = await axios.post('http://localhost:5000/api/auth/login', userData);
             console.log(response.data);
 
-            // Save the token to local storage
             localStorage.setItem('token', response.data.token);
 
-            // Redirect to /dashboard
             navigate('/dashboard');
         } catch (error) {
             console.error('There was an error!', error);
