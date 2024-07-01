@@ -1,7 +1,7 @@
 # Restaurant Web Resource Development with Python and Flask
 
 ## Overview
-This repository contains the code and documentation for the bachelor's qualification work by Mykola Nesterenko, a student of group AI-204 at the National University "Odesa Polytechnic," under the supervision of Oleksii Volodymyrovych Ivanov. The project involves developing a restaurant web resource using Python and Flask.
+This repository contains the code and documentation for the bachelor's qualification work by a student of the National University "Odesa Polytechnic". The project involves developing a restaurant web resource using Python and Flask.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -38,9 +38,12 @@ The web resource is designed with a microservice architecture that allows easy s
    git clone https://github.com/bezpechno/Adjoint.git
    cd Adjoint
 2. **Set up a virtual environment**
+   ```bash
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   source venv/bin/activate
+   # On Windows, use `venv\Scripts\activate`
 3. **Install the dependencies**
+   ```bash
    pip install -r requirements.txt
    npm install --legacy-peer-deps
 4. **Set up the environment variables**
