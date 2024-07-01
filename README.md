@@ -12,9 +12,9 @@ This repository contains the code and documentation for the bachelor's qualifica
 - [Usage](#usage)
 
 ## Abstract
-This project presents a web resource for restaurant management, providing real-time administration and user interaction capabilities. It aims to facilitate efficient communication between restaurants and their customers, streamlining the process of choosing and ordering food online.
+This project presents a web resource for restaurant management, providing real-time administration and user interaction capabilities. It aims to facilitate efficient communication between restaurants and their customers, streamlining the process of choosing food online.
 
-The web resource is designed with a microservice architecture that allows easy scalability and expansion of functionality. The backend system, built on the Flask platform, interacts through a REST API, while MongoDB is used for data storage, ensuring quick access and easy management of unstructured data. Quality control is maintained through functional and unit testing.
+The web resource allows easy scalability and expansion of functionality. The backend system, built on the Flask platform, interacts through a REST API, while MongoDB is used for data storage, ensuring quick access and easy management of unstructured data. Quality control is maintained through functional and unit testing.
 
 ## Features
 - **User Management:** Authentication, authorization, and profile management.
